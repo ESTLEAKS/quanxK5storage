@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuanXk5 Storage System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Storage Menu -->
+    <div id="storage-menu" class="hidden">
+        <div class="menu-wrapper">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <i class="fas fa-warehouse"></i>
+                        <span>QuanXk5</span>
+                    </div>
+                    <div class="subtitle">Storage System</div>
+                </div>
+                <nav class="nav-menu">
+                    <button class="nav-item active" onclick="switchTab('access')">
+                        <i class="fas fa-box-open"></i>
+                        <span>Access Storage</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('upgrade')">
+                        <i class="fas fa-arrow-up-right-dots"></i>
+                        <span>Upgrade Storage</span>
+                    </button>
+                    <button class="nav-item" onclick="switchTab('password')">
+                        <i class="fas fa-lock"></i>
+                        <span>Change Password</span>
+                    </button>
+                </nav>
+                <button class="close-btn" onclick="closeMenu()">
+                    <i class="fas fa-xmark"></i>
+                    <span>Close</span>
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- No Storage View -->
+                <div id="no-storage-view" class="view">
+                    <div class="view-header">
+                        <h2>Storage Unit Available</h2>
+                    </div>
+                    <div class="view-body">
+                        <div class="storage-purchase-card">
+                            <div class="purchase-icon">
+                                <i class="fas fa-warehouse"></i>
+                            </div>
+                            <h3>Purchase Storage Unit</h3>
+                            <p>Secure your items in a private storage unit. Start with basic storage and upgrade as you need more space.</p>
+                            
+                            <div class="tier-info">
+                                <div class="tier-badge">Basic Storage</div>
+                                <div class="tier-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-box"></i>
+                                        <span id="purchase-slots">25 Slots</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-weight-hanging"></i>
+                                        <span id="purchase-weight">100kg Capacity</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-container">
+                                <div class="form-group">
+                                    <label><i class="fas fa-lock"></i> Set Password (Required)</label>
+                                    <input type="password" class="input-field" id="purchase-password" placeholder="Enter 4-12 characters" maxlength="12">
+                                    <small style="color: #999; font-size: 12px; margin-top: 4px; display: block;">You'll need this password to access your storage</small>
+                                </div>
+                            </div>
+
+                            <div class="purchase-price">
+                                <span>Purchase Price</span>
+                                <strong id="purchase-price">$50,000</strong>
+                            </div>
+
+                            <button class="btn btn-success btn-lg" onclick="purchaseStorage()">
+                                <i class="fas fa-cart-shopping"></i> Purchase Storage
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Access Tab -->
+                <div id="access-tab" class="view hidden">
+                    <div class="view-header">
+                        <h2>Access Your Storage</h2>
+                        <div class="storage-tier-badge" id="current-tier-badge">Basic Storage</div>
+                    </div>
+                    <div class="view-body">
+                        <div class="storage-info-card">
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <i class="fas fa-box"></i>
+                                    <div>
+                                        <span class="info-label">Capacity</span>
+                                        <span class="info-value" id="storage-slots">25 Slots</span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-weight-hanging"></i>
+                                    <div>
+                                        <span class="info-label">Weight Limit</span>
+                                        <span class="info-value" id="storage-weight">100kg</span>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fas fa-layer-group"></i>
+                                    <div>
+                                        <span class="info-label">Tier</span>
+                                        <span class="info-value" id="storage-tier-text">1/4</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label><i class="fas fa-key"></i> Enter Password</label>
+                                <input type="password" class="input-field" id="access-password" placeholder="Enter your storage password">
+                            </div>
+                            <button class="btn btn-primary btn-lg" onclick="accessStorage()">
+                                <i class="fas fa-door-open"></i> Open Storage
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upgrade Tab -->
+                <div id="upgrade-tab" class="view hidden">
+                    <div class="view-header">
+                        <h2>Upgrade Storage</h2>
+                    </div>
+                    <div class="view-body">
+                        <div class="upgrade-grid" id="upgrade-options"></div>
+                    </div>
+                </div>
+
+                <!-- Password Tab -->
+                <div id="password-tab" class="view hidden">
+                    <div class="view-header">
+                        <h2>Change Password</h2>
+                    </div>
+                    <div class="view-body">
+                        <div class="form-container">
+                            <div class="info-banner">
+                                <i class="fas fa-circle-info"></i>
+                                <p>Update your storage password. You'll need the new password to access your storage.</p>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> New Password</label>
+                                <input type="password" class="input-field" id="new-password" placeholder="Enter new password (4-12 characters)" maxlength="12">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-lock"></i> Confirm Password</label>
+                                <input type="password" class="input-field" id="confirm-password" placeholder="Confirm new password" maxlength="12">
+                            </div>
+                            <button class="btn btn-success btn-lg" onclick="changePassword()">
+                                <i class="fas fa-check"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Placement Menu -->
+    <div id="placement-menu" class="hidden">
+        <div class="placement-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-pin"></i> Place Storage Location</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label><i class="fas fa-tag"></i> Location Label</label>
+                    <input type="text" class="input-field" id="location-label" placeholder="e.g., Downtown Storage #1">
+                </div>
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="location-blip" checked>
+                        <span>Show on map</span>
+                    </label>
+                </div>
+                <div class="coords-display">
+                    <div class="coord-item">
+                        <span>X:</span>
+                        <strong id="coord-x">0.00</strong>
+                    </div>
+                    <div class="coord-item">
+                        <span>Y:</span>
+                        <strong id="coord-y">0.00</strong>
+                    </div>
+                    <div class="coord-item">
+                        <span>Z:</span>
+                        <strong id="coord-z">0.00</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePlacementMenu()">Cancel</button>
+                <button class="btn btn-success" onclick="confirmPlacement()">
+                    <i class="fas fa-check"></i> Create Location
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
